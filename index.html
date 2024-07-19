@@ -53,6 +53,7 @@
         <input type="number" id="points" placeholder="反点积分">
         <input type="number" step="0.01" id="discount1" placeholder="第一阶段折扣 (如9折为0.9)">
         <input type="number" step="0.01" id="discount2" placeholder="第二阶段折扣 (如96折为0.96)">
+        <input type="number" id="immediateDiscount" placeholder="本次购物立减多少元">
         <button onclick="calculateDiscount()">计算折扣</button>
         <div class="result" id="result"></div>
     </div>
@@ -63,15 +64,18 @@
             var points = parseFloat(document.getElementById("points").value);
             var discount1 = parseFloat(document.getElementById("discount1").value);
             var discount2 = parseFloat(document.getElementById("discount2").value);
+            var immediateDiscount = parseFloat(document.getElementById("immediateDiscount").value);
 
-            if (isNaN(originalPrice) || isNaN(points) || isNaN(discount1) || isNaN(discount2)) {
+            if (isNaN(originalPrice) || isNaN(points) || isNaN(discount1) || isNaN(discount2) || isNaN(immediateDiscount)) {
                 document.getElementById("result").innerText = "请输入有效的值";
                 return;
             }
 
-            var discount = (originalPrice * discount1 * discount2 - (points / 200)) / originalPrice;
+            var discountedPrice = originalPrice * discount1 * discount2;
+            var finalPrice = discountedPrice - (points / 200) - immediateDiscount;
+            var discount = finalPrice / originalPrice;
             var finalDiscount = (discount * 10).toFixed(2) + "折";
-            
+
             document.getElementById("result").innerText = "综合折扣: " + finalDiscount;
         }
     </script>
